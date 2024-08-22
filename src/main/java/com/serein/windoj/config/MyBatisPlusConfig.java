@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author https://github.com/natsumeaiovo
  */
 @Configuration
-@MapperScan("com.serein.windoj.mapper")
+//@MapperScan("com.serein.windoj.mapper")   // Application 里已存在 MapperScan
 public class MyBatisPlusConfig {
 
     /**
