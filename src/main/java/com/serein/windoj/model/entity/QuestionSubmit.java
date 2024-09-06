@@ -30,7 +30,7 @@ public class QuestionSubmit implements Serializable {
     private String code;
 
     /**
-     * 判题信息（json 对象）
+     * 判题信息（json 的 String）
      */
     private String judgeInfo;
 

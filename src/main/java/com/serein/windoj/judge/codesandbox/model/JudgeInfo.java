@@ -1,4 +1,4 @@
-package com.serein.windoj.model.dto.questionsubmit;
+package com.serein.windoj.judge.codesandbox.model;
 
 import lombok.Data;
 

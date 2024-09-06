@@ -126,7 +126,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = this.getOne(queryWrapper);
             // 被封号，禁止登录
             if (user != null && UserRoleEnum.BAN.getValue().equals(user.getUserRole())) {
-                throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "该用户已被封，禁止登录");
+                throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "该用户已被封禁，禁止登录");
             }
             // 用户不存在则创建
             if (user == null) {
@@ -166,6 +166,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (currentUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
+        log.info("用户已登录" + currentUser);
         return currentUser;
     }
 

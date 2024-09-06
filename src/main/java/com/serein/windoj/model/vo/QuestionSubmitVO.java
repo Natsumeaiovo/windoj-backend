@@ -1,7 +1,7 @@
 package com.serein.windoj.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.serein.windoj.model.dto.questionsubmit.JudgeInfo;
+import com.serein.windoj.judge.codesandbox.model.JudgeInfo;
 import com.serein.windoj.model.entity.QuestionSubmit;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
