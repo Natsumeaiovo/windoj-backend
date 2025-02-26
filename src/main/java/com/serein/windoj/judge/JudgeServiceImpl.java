@@ -6,7 +6,6 @@ import com.serein.windoj.exception.BusinessException;
 import com.serein.windoj.judge.codesandbox.CodeSandbox;
 import com.serein.windoj.judge.codesandbox.CodeSandboxFactory;
 import com.serein.windoj.judge.codesandbox.CodeSandboxProxy;
-import com.serein.windoj.judge.codesandbox.JudgeManager;
 import com.serein.windoj.judge.codesandbox.model.ExecuteCodeRequest;
 import com.serein.windoj.judge.codesandbox.model.ExecuteCodeResponse;
 import com.serein.windoj.judge.strategy.JudgeContext;
@@ -17,6 +16,7 @@ import com.serein.windoj.model.entity.QuestionSubmit;
 import com.serein.windoj.model.enums.QuestionSubmitStatusEnum;
 import com.serein.windoj.service.QuestionService;
 import com.serein.windoj.service.QuestionSubmitService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
  * @description: 判题服务实现类
  */
 @Service
+@Slf4j
 public class JudgeServiceImpl implements JudgeService {
 
     @Resource
@@ -84,7 +85,18 @@ public class JudgeServiceImpl implements JudgeService {
                 .code(code)
                 .inputList(inputList)
                 .build();
-        ExecuteCodeResponse executeCodeResponse = codeSandbox.executeCode(executeCodeRequest);  // 拿到代码沙箱执行结果
+        ExecuteCodeResponse executeCodeResponse = null;  // 拿到代码沙箱执行结果
+        try {
+            executeCodeResponse = codeSandbox.executeCode(executeCodeRequest);
+            System.out.println("代码沙箱返回结果：" + executeCodeResponse);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 设置题目提交状态为失败
+            log.error("代码提交失败！");
+            questionSubmitUpdate.setStatus(QuestionSubmitStatusEnum.FAILED.getValue());
+            questionSubmitService.updateById(questionSubmitUpdate);
+        }
         JudgeInfo exeJudgeInfo = executeCodeResponse.getJudgeInfo();
         List<String> outputList = executeCodeResponse.getOutputList();
 
@@ -107,6 +119,6 @@ public class JudgeServiceImpl implements JudgeService {
         if (!isUpdated) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目状态更新错误");
         }
-        return questionSubmitService.getById(questionId);
+        return questionSubmitService.getById(questionSubmitId);
     }
 }

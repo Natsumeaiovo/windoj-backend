@@ -10,6 +10,7 @@ import com.serein.windoj.model.entity.Question;
 import com.serein.windoj.model.enums.JudgeInfoMessageEnum;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author: serein
@@ -29,7 +30,7 @@ public class JavaJudgeStrategy implements JudgeStrategy {
     public JudgeInfo doJudge(JudgeContext judgeContext) {
         // 沙箱执行代码并响应返回 的 判题信息
         JudgeInfo exeJudgeInfo = judgeContext.getExeJudgeInfo();
-        Long memory = exeJudgeInfo.getMemory();
+        Long memory = Optional.ofNullable(exeJudgeInfo.getMemory()).orElse(0L);
         Long time = exeJudgeInfo.getTime();
         List<String> inputList = judgeContext.getInputList();
         List<String> exeOutputList = judgeContext.getOutputList();
@@ -65,8 +66,8 @@ public class JavaJudgeStrategy implements JudgeStrategy {
             judgeInfoResponse.setMessage(JudgeInfoMessageEnum.MEMORY_LIMIT_EXCEEDED.getValue());
             return judgeInfoResponse;
         }
-        // 假设 Java 程序需要额外多 3秒 的时间限制
-        long JAVA_PROGRAM_TIME_EXTRA_COST = 3000;
+        // 假设 Java 程序需要额外多 1秒 的时间限制
+        long JAVA_PROGRAM_TIME_EXTRA_COST = 1000L;
         if (time > timeLimit + JAVA_PROGRAM_TIME_EXTRA_COST) {
             judgeInfoResponse.setMessage(JudgeInfoMessageEnum.TIME_LIMIT_EXCEEDED.getValue());
             return judgeInfoResponse;

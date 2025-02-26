@@ -49,7 +49,7 @@ public class DefaultJudgeStrategy implements JudgeStrategy {
         // 依次判断 每一项输出 和 预期输出 是否相等
         for (int i = 0; i < judgeCaseList.size(); i++) {
             JudgeCase judgeCase = judgeCaseList.get(i);
-            if (judgeCase.getOutput().equals(exeOutputList.get(i))) {
+            if (!judgeCase.getOutput().equals(exeOutputList.get(i))) {
                 judgeInfoResponse.setMessage(JudgeInfoMessageEnum.WRONG_ANSWER.getValue());
                 return judgeInfoResponse;
             }

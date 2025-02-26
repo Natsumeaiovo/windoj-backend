@@ -1,4 +1,4 @@
-package com.serein.windoj.judge.codesandbox;
+package com.serein.windoj.judge;
 
 import com.serein.windoj.judge.strategy.JudgeContext;
 import com.serein.windoj.judge.strategy.JudgeStrategy;
